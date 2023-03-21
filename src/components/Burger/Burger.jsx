@@ -1,16 +1,13 @@
 import styles from './Burger.module.css';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerIngredientsConstructor from '../BurgerIngredientsConstructor/BurgerIngredientsConstructor';
-import getIngredients from '../../utils/api';
+import data from '../../utils/data';
 
 const Burger = () => {   
-
-  const [ingredients, setIngredients] = React.useState(getIngredients());
-
   return(
     <main className={styles.Burger}>
-      <BurgerIngredients ingredients={ingredients}/>
-      <BurgerIngredientsConstructor  ingredients={ingredients}/>
+      <BurgerIngredients ingredients={data}/>
+      <BurgerIngredientsConstructor  ingredients={data}/>
     </main>
   );
 }
