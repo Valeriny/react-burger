@@ -1,0 +1,8 @@
+.app-header__menu-item {
+    margin: 0;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
