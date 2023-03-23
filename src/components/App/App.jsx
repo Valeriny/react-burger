@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerIngredientsConstructor from "../BurgerIngredientsConstructor/BurgerIngredientsConstructor";
-import styles from "./Burger.module.css";
+import styles from "./App.module.css";
 import getIngredients from "../../utils/api.js";
 
-const Burger = () => {
+const App = () => {
   const [ingredients, setIngredients] = useState([]);
 
   useEffect(() => {
@@ -14,11 +14,11 @@ const Burger = () => {
   }, []);
 
   return (
-    <main className={styles.Burger}>
+    <main className={styles.App}>
       <BurgerIngredients ingredients={ingredients} />
       <BurgerIngredientsConstructor ingredients={ingredients} />
     </main>
   );
 };
 
-export default Burger;
+export default App;

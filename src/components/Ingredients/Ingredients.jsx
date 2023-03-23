@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 
 const Ingredients = (props) => {
   return (
-    <li className={styles.ingredient} onClick={props.OpenModal}>    
+    <li className={styles.ingredient} onClick={props.openModal}>    
       <img src={props.image} alt={props.name} />
       <Counter count={1} size="default" extraClass="m-1" />
       <div className={styles.price}>
@@ -17,9 +17,9 @@ const Ingredients = (props) => {
 }
 
 Ingredients.propTypes = {
-  price: PropTypes.number,
-  name: PropTypes.string,
-  OpenModal: PropTypes.func.isRequired,
+  price: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  openModal: PropTypes.func.isRequired,
 }
 
 export default Ingredients;

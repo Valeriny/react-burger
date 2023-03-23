@@ -11,7 +11,7 @@ const Modal = (props) => {
   useEffect(() => {
     const handleEscClose = (evt) => {
       if (evt.key === "Escape" || evt.key === "Esc") {
-        props.CloseModal();
+        props.closeModal();
       }
     };
     document.addEventListener("keydown", handleEscClose);
@@ -25,13 +25,13 @@ const Modal = (props) => {
       <div className={styles.modal}>
         <button
           className={`${styles["modal__btn-close"]}`}
-          onClick={props.CloseModal}
+          onClick={props.closeModal}
         >
           <CloseIcon type="primary" />
         </button>
         {props.children}
       </div>
-      <ModalOverlay CloseModal={props.CloseModal} />
+      <ModalOverlay closeModal={props.closeModal} />
     </>,
     modalRoot
   );
@@ -39,6 +39,6 @@ const Modal = (props) => {
 
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
-  CloseModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 };
 export default Modal;

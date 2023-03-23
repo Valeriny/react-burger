@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "./ModalIngredient.module.css";
 
-const ModalIngredient = (props) => {
+const ModalIngredient = ({ ingredient }) => {
   return (
     <div className={`${styles["modal-ingredient"]} pt-10 pb-15`}>
       <h1
@@ -9,9 +9,9 @@ const ModalIngredient = (props) => {
       >
         Детали ингредиента
       </h1>
-      <img src={props.ingredient.image_large} alt={props.ingredient.name} />
+      <img src={ingredient.image} alt={ingredient.name} />
       <p className="text text_type_main-medium mb-8 mt-4">
-        {props.ingredient.name}
+        {ingredient.name}
       </p>
       <div className={`${styles["modal-ingredient__container"]}`}>
         <div className={`${styles["modal-ingredient__nutrients"]}`}>
@@ -19,7 +19,7 @@ const ModalIngredient = (props) => {
             Калории, ккал
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.calories}
+            {ingredient.calories}
           </p>
         </div>
         <div className={`${styles["modal-ingredient__nutrients"]}`}>
@@ -27,7 +27,7 @@ const ModalIngredient = (props) => {
             Белки, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.proteins}
+            {ingredient.proteins}
           </p>
         </div>
         <div className={`${styles["modal-ingredient__nutrients"]}`}>
@@ -35,7 +35,7 @@ const ModalIngredient = (props) => {
             Жиры, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.fat}
+            {ingredient.fat}
           </p>
         </div>
         <div className={`${styles["modal-ingredient__nutrients"]}`}>
@@ -43,7 +43,7 @@ const ModalIngredient = (props) => {
             Углеводы, г
           </p>
           <p className="text text_type_digits-default text_color_inactive">
-            {props.ingredient.carbohydrates}
+            {ingredient.carbohydrates}
           </p>
         </div>
       </div>
@@ -52,12 +52,13 @@ const ModalIngredient = (props) => {
 };
 
 ModalIngredient.propTypes = {
-  image_large: PropTypes.string,
-  name: PropTypes.string,
-  calories: PropTypes.string,
-  proteins: PropTypes.string,
-  fat: PropTypes.string,
-  carbohydrates: PropTypes.string,
+  ingridient: PropTypes.object.isRequired,
 };
 
 export default ModalIngredient;
+
+
+
+
+
+

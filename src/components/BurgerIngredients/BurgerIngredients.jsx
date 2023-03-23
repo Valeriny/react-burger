@@ -7,21 +7,20 @@ import ModalIngredient from "../ModalIngredient/ModalIngredient";
 import PropTypes from "prop-types";
 import { ingredientsPropType } from "../../utils/prop-types.js";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ingredients}) => {
   const [currentTypeTab, setCurrentTypeTab] = React.useState("bun");
   const [isOpenModal, setIsOpenModal] = React.useState(false);
   const [ingredient, setIngredient] = React.useState("");
 
-  const OpenModal = (item) => {
+  const openModal = (item) => {
     setIsOpenModal(true);
     setIngredient(item);
   };
 
-  const CloseModal = () => {
+  const closeModal = () => {
     setIsOpenModal(false);
   };
 
-  const ingredients = props.ingredients;
   const filterIngredientsBuns = ingredients.filter((item) => {
     return item.type === "bun";
   });
@@ -35,7 +34,7 @@ const BurgerIngredients = (props) => {
   return (
     <div>
       {isOpenModal && (
-        <Modal CloseModal={CloseModal}>
+        <Modal closeModal={closeModal}>
           <ModalIngredient ingredient={ingredient} />
         </Modal>
       )}
@@ -72,7 +71,7 @@ const BurgerIngredients = (props) => {
               name={item.name}
               image={item.image}
               price={item.price}
-              OpenModal={() => OpenModal(item)}
+              openModal={() => openModal(item)}
             />
           ))}
         </ul>
@@ -84,7 +83,7 @@ const BurgerIngredients = (props) => {
               name={item.name}
               image={item.image}
               price={item.price}
-              OpenModal={() => OpenModal(item)}
+              openModal={() => openModal(item)}
             />
           ))}
         </ul>
@@ -96,7 +95,7 @@ const BurgerIngredients = (props) => {
               name={item.name}
               image={item.image}
               price={item.price}
-              OpenModal={() => OpenModal(item)}
+              openModal={() => openModal(item)}
             />
           ))}
         </ul>
@@ -106,7 +105,7 @@ const BurgerIngredients = (props) => {
 };
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientsPropType).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientsPropType.isRequired).isRequired,
 };
 
 export default BurgerIngredients;

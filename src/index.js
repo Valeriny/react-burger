@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import AppHeader from './components/AppHeader/AppHeader';
-import Burger from './components/Burger/Burger';
+import App from './components/App/App';
 
 
 const root = ReactDOM.createRoot(
@@ -12,6 +12,6 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <AppHeader/>
-    <Burger />
+    <App />
   </React.StrictMode>
 );

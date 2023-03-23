@@ -1,32 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   ConstructorElement,
   Button,
   DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Order from '../Order/Order';
+import Order from "../Order/Order";
 import styles from "./BurgerIngredientsConstructor.module.css";
-import Modal from '../Modal/Modal';
+import Modal from "../Modal/Modal";
 import PropTypes from "prop-types";
-import {ingredientsPropType} from '../../utils/prop-types.js';
-
-
+import { ingredientsPropType } from "../../utils/prop-types.js";
 
 const BurgerIngredientsConstructor = (props) => {
-
   const ingredients = props.ingredients;
-  const filteredIngredientsBuns = ingredients.filter((item) => {
-    return item.type === "bun";
-  });
+  const ingredientBun =
+    ingredients && ingredients.find((ingredient) => ingredient.type === "bun");
   const filteredIngredientsWithoutBuns = ingredients.filter((item) => {
     return item.type !== "bun";
   });
 
   const totalPrice = ingredients.reduce(
-    (number, ingredients) => {     
-      return ingredients.type === "bun"      
-        ? 1255 * 2
+    (number, ingredients) => {
+      return ingredients.type === "bun"
+        ? 0 + ingredients.price * 2
         : number + ingredients.price;
     },
     0
@@ -34,37 +30,38 @@ const BurgerIngredientsConstructor = (props) => {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
 
+  const openModal = () => {
+    setIsOpenModal(true);
+  };
 
-  const OpenModal = () => {  
-    setIsOpenModal(true);  
-  }
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
 
-  const CloseModal = () => {
-    setIsOpenModal(false); 
-  }
-
-  
   return (
     <section className={`${styles["burger-constructor"]}`}>
-      {isOpenModal &&
-        <Modal CloseModal={CloseModal}>
-          <Order/>
+      {isOpenModal && (
+        <Modal closeModal={closeModal}>
+          <Order />
         </Modal>
-      }
-      {filteredIngredientsBuns.length > 0 && (
+      )}
+      {ingredientBun && (
         <div className={`${styles["burger-constructor__element"]} pl-8 mb-4`}>
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={filteredIngredientsBuns[0].name + "\n(верх)"}
-            price={filteredIngredientsBuns[0].price}
-            thumbnail={filteredIngredientsBuns[0].image}
+            text={ingredientBun.name + " (верх)"}
+            price={ingredientBun.price}
+            thumbnail={ingredientBun.image}
           />
         </div>
       )}
-      <ul className={`${styles['burger-constructor__list']}`}>
+      <ul className={`${styles["burger-constructor__list"]}`}>
         {filteredIngredientsWithoutBuns.map((item) => (
-          <li className={`${styles['burger-constructor__element']}`} key={item._id} >
+          <li
+            className={`${styles["burger-constructor__element"]}`}
+            key={item._id}
+          >
             <DragIcon type="primary" />
             <ConstructorElement
               text={item.name}
@@ -74,33 +71,37 @@ const BurgerIngredientsConstructor = (props) => {
           </li>
         ))}
       </ul>
-      {filteredIngredientsBuns.length >= 1 && (
-        <div className={`${styles['burger-constructor__element']} pl-8 mt-4`}>
+      {ingredientBun && (
+        <div className={`${styles["burger-constructor__element"]} pl-8 mt-4`}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={filteredIngredientsBuns[0].name + '\n(низ)'}
-            price={filteredIngredientsBuns[0].price}
-            thumbnail={filteredIngredientsBuns[0].image}
+            text={ingredientBun.name + " (низ)"}
+            price={ingredientBun.price}
+            thumbnail={ingredientBun.image}
           />
         </div>
       )}
-      < div className={`${styles['burger-constructor__order']} mt-10`}>
-        <div className={`${styles['burger-constructor__order-price']}`}>
+      <div className={`${styles["burger-constructor__order"]} mt-10`}>
+        <div className={`${styles["burger-constructor__order-price"]}`}>
           <p className="text text_type_digits-medium">{totalPrice}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={OpenModal}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={openModal}
+        >
           Оформить заказ
         </Button>
       </div>
-
     </section>
   );
-}
+};
 
 BurgerIngredientsConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientsPropType).isRequired,
+  ingredients: PropTypes.arrayOf(ingredientsPropType.isRequired).isRequired,
 };
 
 export default BurgerIngredientsConstructor;
