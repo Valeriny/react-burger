@@ -9,7 +9,7 @@ const ModalIngredient = ({ ingredient }) => {
       >
         Детали ингредиента
       </h1>
-      <img src={ingredient.image} alt={ingredient.name} />
+      <img src={ingredient.image} alt={ingredient.name} className={`${styles["image"]}`}/>
       <p className="text text_type_main-medium mb-8 mt-4">
         {ingredient.name}
       </p>
@@ -52,7 +52,7 @@ const ModalIngredient = ({ ingredient }) => {
 };
 
 ModalIngredient.propTypes = {
-  ingridient: PropTypes.object.isRequired,
+  ingredient: PropTypes.object.isRequired,
 };
 
 export default ModalIngredient;

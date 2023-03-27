@@ -5,7 +5,7 @@ const AppHeaderMenuItem = (props) => {
   return (
     <li className={`text text_type_main-default`}>
       <a href="#" className={`${styles["app-header__item"]} `}>
-        {props.image}
+        {props.icon}
         <span
           className={`${styles["app-header__item-text"]} ${
             !props.isActive ? "text_color_inactive" : ""
@@ -19,8 +19,9 @@ const AppHeaderMenuItem = (props) => {
 };
 
 AppHeaderMenuItem.propTypes = {
-  isActive: PropTypes.bool,
-  text: PropTypes.string,
+  isActive: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  icon: PropTypes.object.isRequired,
 };
 
 export default AppHeaderMenuItem;

@@ -17,6 +17,7 @@ const Ingredients = (props) => {
 }
 
 Ingredients.propTypes = {
+  image:PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
