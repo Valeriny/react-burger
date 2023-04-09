@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import {
   ConstructorElement,
   Button,
@@ -9,26 +9,28 @@ import Order from "../Order/Order";
 import styles from "./BurgerIngredientsConstructor.module.css";
 import Modal from "../Modal/Modal";
 import PropTypes from "prop-types";
+import getOrder from "../../utils/api.js";
 import { ingredientsPropType } from "../../utils/prop-types.js";
+import { BurgerContext } from "../services/BurgerContext.js";
 
-const BurgerIngredientsConstructor = (props) => {
-  const ingredients = props.ingredients;
+const BurgerIngredientsConstructor = () => {
+  const { ingredients } = useContext(BurgerContext);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [orderData, setOrderData] = useState(0);
+
   const ingredientBun =
     ingredients && ingredients.find((ingredient) => ingredient.type === "bun");
+
   const filteredIngredientsWithoutBuns = ingredients.filter((item) => {
     return item.type !== "bun";
   });
 
-  const totalPrice = ingredients.reduce(
-    (number, ingredients) => {
-      return ingredients.type === "bun"
-        ? 0 + ingredients.price * 2
-        : number + ingredients.price;
-    },
-    0
-  );
-
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const totalPrice = ingredients.reduce(() => {
+    return (
+      ingredientBun.price * 2 +
+      filteredIngredientsWithoutBuns.reduce((s, v) => s + v.price, 0)
+    );
+  }, 0);
 
   const openModal = () => {
     setIsOpenModal(true);
@@ -36,13 +38,31 @@ const BurgerIngredientsConstructor = (props) => {
 
   const closeModal = () => {
     setIsOpenModal(false);
+    setOrderData(0);
+  };
+
+  const getIngredientsId = () => ({
+    ingredients: [
+      ingredientBun._id,
+      ...filteredIngredientsWithoutBuns.map((ingridient) => ingridient._id),
+      ingredientBun._id,
+    ],
+  });
+
+  const placeOrder = async () => {
+    openModal();
+    return await getOrder(getIngredientsId())
+      .then((res) => setOrderData(res.order.number))
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <section className={`${styles["burger-constructor"]}`}>
       {isOpenModal && (
         <Modal closeModal={closeModal}>
-          <Order />
+          <Order orderData={orderData} />
         </Modal>
       )}
       {ingredientBun && (
@@ -91,7 +111,7 @@ const BurgerIngredientsConstructor = (props) => {
           htmlType="button"
           type="primary"
           size="large"
-          onClick={openModal}
+          onClick={placeOrder}
         >
           Оформить заказ
         </Button>
