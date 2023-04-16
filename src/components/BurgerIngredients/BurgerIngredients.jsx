@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
 import styles from "./BurgerIngredients.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredients from "../Ingredients/Ingredients";
+import Ingredient from "../Ingredient/Ingredient";
 import Modal from "../Modal/Modal";
-import ModalIngredient from "../ModalIngredient/ModalIngredient";
-import PropTypes from "prop-types";
-import { ingredientsPropType } from "../../utils/prop-types.js";
-import { BurgerContext } from "../services/BurgerContext.js";
+import ModalIngredient from "../IngredientDetails/IngredientDetails";
+import { BurgerContext } from "../../services/BurgerContext.js";
 
 const BurgerIngredients = () => {
   const { ingredients } = useContext(BurgerContext);
@@ -69,7 +67,7 @@ const BurgerIngredients = () => {
         <h2 className="text text_type_main-medium mt-10 mb-6">Булки</h2>
         <ul className={styles["burger__ingredients-list"]}>
           {filterIngredientsBuns.map((item) => (
-            <Ingredients
+            <Ingredient
               key={item._id}
               name={item.name}
               image={item.image}
@@ -81,7 +79,7 @@ const BurgerIngredients = () => {
         <h2 className="text text_type_main-medium mt-10 mb-6">Соусы</h2>
         <ul className={styles["burger__ingredients-list"]}>
           {filterIngredientsSauce.map((item) => (
-            <Ingredients
+            <Ingredient
               key={item._id}
               name={item.name}
               image={item.image}
@@ -93,7 +91,7 @@ const BurgerIngredients = () => {
         <h2 className="text text_type_main-medium mt-10 mb-6">Начинки</h2>
         <ul className={styles["burger__ingredients-list"]}>
           {filterIngredientsMain.map((item) => (
-            <Ingredients
+            <Ingredient
               key={item._id}
               name={item.name}
               image={item.image}
@@ -105,10 +103,6 @@ const BurgerIngredients = () => {
       </div>
     </div>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientsPropType.isRequired).isRequired,
 };
 
 export default BurgerIngredients;

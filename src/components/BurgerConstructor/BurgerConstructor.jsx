@@ -5,15 +5,13 @@ import {
   DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import Order from "../Order/Order";
-import styles from "./BurgerIngredientsConstructor.module.css";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
-import PropTypes from "prop-types";
-import getOrder from "../../utils/api.js";
-import { ingredientsPropType } from "../../utils/prop-types.js";
-import { BurgerContext } from "../services/BurgerContext.js";
+import {getOrder} from "../../utils/api.js";
+import { BurgerContext } from "../../services/BurgerContext.js";
 
-const BurgerIngredientsConstructor = () => {
+const BurgerConstructor = () => {
   const { ingredients } = useContext(BurgerContext);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [orderData, setOrderData] = useState(0);
@@ -21,14 +19,14 @@ const BurgerIngredientsConstructor = () => {
   const ingredientBun =
     ingredients && ingredients.find((ingredient) => ingredient.type === "bun");
 
-  const filteredIngredientsWithoutBuns = ingredients.filter((item) => {
+  const ingredientsWithoutBuns = ingredients.filter((item) => {
     return item.type !== "bun";
   });
 
   const totalPrice = ingredients.reduce(() => {
     return (
       ingredientBun.price * 2 +
-      filteredIngredientsWithoutBuns.reduce((s, v) => s + v.price, 0)
+      ingredientsWithoutBuns.reduce((s, v) => s + v.price, 0)
     );
   }, 0);
 
@@ -41,28 +39,26 @@ const BurgerIngredientsConstructor = () => {
     setOrderData(0);
   };
 
-  const getIngredientsId = () => ({
-    ingredients: [
-      ingredientBun._id,
-      ...filteredIngredientsWithoutBuns.map((ingridient) => ingridient._id),
-      ingredientBun._id,
-    ],
-  });
+  const getIngredientsId = () => {
+    let ingredIds = [];
+    ingredients.forEach(item => {
+      ingredIds.unshift(item._id);
+    })
+    return ingredIds;
+  };
 
-  const placeOrder = async () => {
-    openModal();
-    return await getOrder(getIngredientsId())
-      .then((res) => setOrderData(res.order.number))
-      .catch((err) => {
-        console.log(err);
-      });
+  const placeOrder = async () => {    
+    return await getOrder()
+    .then((res) => setOrderData(res.order.number), openModal())
+    .catch((err) =>
+      console.err(err));      
   };
 
   return (
     <section className={`${styles["burger-constructor"]}`}>
       {isOpenModal && (
         <Modal closeModal={closeModal}>
-          <Order orderData={orderData} />
+          <OrderDetails orderData={orderData} />
         </Modal>
       )}
       {ingredientBun && (
@@ -77,7 +73,7 @@ const BurgerIngredientsConstructor = () => {
         </div>
       )}
       <ul className={`${styles["burger-constructor__list"]}`}>
-        {filteredIngredientsWithoutBuns.map((item) => (
+        {ingredientsWithoutBuns.map((item) => (
           <li
             className={`${styles["burger-constructor__element"]}`}
             key={item._id}
@@ -120,8 +116,4 @@ const BurgerIngredientsConstructor = () => {
   );
 };
 
-BurgerIngredientsConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientsPropType.isRequired).isRequired,
-};
-
-export default BurgerIngredientsConstructor;
+export default BurgerConstructor;
