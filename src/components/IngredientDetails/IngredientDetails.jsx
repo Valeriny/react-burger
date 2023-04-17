@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import styles from "./ModalIngredient.module.css";
+import styles from "./IngredientDetails.module.css";
 
-const ModalIngredient = ({ ingredient }) => {
+const IngredientDetails = ({ ingredient }) => {
   return (
     <div className={`${styles["modal-ingredient"]} pt-10 pb-15`}>
       <h1
@@ -51,11 +51,11 @@ const ModalIngredient = ({ ingredient }) => {
   );
 };
 
-ModalIngredient.propTypes = {
+IngredientDetails.propTypes = {
   ingredient: PropTypes.object.isRequired,
 };
 
-export default ModalIngredient;
+export default IngredientDetails;
 
 
 

@@ -1,8 +1,8 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './Ingredients.module.css';
+import styles from './Ingredient.module.css';
 import PropTypes from "prop-types"
 
-const Ingredients = (props) => {
+const Ingredient = (props) => {
   return (
     <li className={styles.ingredient} onClick={props.openModal}>    
       <img src={props.image} alt={props.name} />
@@ -16,14 +16,14 @@ const Ingredients = (props) => {
   )
 }
 
-Ingredients.propTypes = {
+Ingredient.propTypes = {
   image:PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   openModal: PropTypes.func.isRequired,
 }
 
-export default Ingredients;
+export default Ingredient;
 
 
 
