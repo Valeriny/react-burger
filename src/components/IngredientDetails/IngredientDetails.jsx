@@ -1,7 +1,12 @@
+import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import styles from "./IngredientDetails.module.css";
 
-const IngredientDetails = ({ ingredient }) => {
+function IngredientDetails() {
+  const ingredient = useSelector(
+    (store) => store.ingredientDetails.selectedIngredient
+  );
+
   return (
     <div className={`${styles["modal-ingredient"]} pt-10 pb-15`}>
       <h1
@@ -9,10 +14,12 @@ const IngredientDetails = ({ ingredient }) => {
       >
         Детали ингредиента
       </h1>
-      <img src={ingredient.image} alt={ingredient.name} className={`${styles["image"]}`}/>
-      <p className="text text_type_main-medium mb-8 mt-4">
-        {ingredient.name}
-      </p>
+      <img
+        src={ingredient.image}
+        alt={ingredient.name}
+        className={`${styles["image"]}`}
+      />
+      <p className="text text_type_main-medium mb-8 mt-4">{ingredient.name}</p>
       <div className={`${styles["modal-ingredient__container"]}`}>
         <div className={`${styles["modal-ingredient__nutrients"]}`}>
           <p className="text text_type_main-small text_color_inactive">
@@ -49,16 +56,6 @@ const IngredientDetails = ({ ingredient }) => {
       </div>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-};
+}
 
 export default IngredientDetails;
-
-
-
-
-
-
