@@ -19,7 +19,7 @@ const App = () => {
   return (
     <>     
         <AppHeader />
-        <main className={styles.main}>
+        <main className={styles.App}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredients />
         <BurgerConstructor />

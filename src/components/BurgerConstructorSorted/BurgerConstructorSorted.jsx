@@ -1,40 +1,42 @@
 import { useRef } from "react";
-import {useDrop, useDrag} from "react-dnd";
+import { useDrop, useDrag } from "react-dnd";
 import { useDispatch } from "react-redux";
-import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import {
+  ConstructorElement,
+  DragIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./BurgerConstructorSorted.module.css";
 import { DELETE_INGREDIENT } from "../../utils/api";
 
 function BurgerConstructorSorted(props) {
-
   const { name, price, image, _id } = props.ing;
   const { index, moveIngredient } = props;
 
   const dispatch = useDispatch();
   const ref = useRef();
 
-
   const removeIngredient = (ing) => {
     dispatch({
       type: DELETE_INGREDIENT,
       data: ing._id,
-    })
-  }
+    });
+  };
 
   const [, drop] = useDrop({
-    accept: 'ingredientList',
+    accept: "ingredientList",
     hover(item, monitor) {
       if (!ref.current) {
-          return;
+        return;
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      if(dragIndex === hoverIndex) {
+      if (dragIndex === hoverIndex) {
         return;
       }
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -45,15 +47,15 @@ function BurgerConstructorSorted(props) {
       }
       moveIngredient(dragIndex, hoverIndex);
       item.index = hoverIndex;
-    }
+    },
   });
 
   const [, dragRef] = useDrag({
-    type: 'ingredientList',
+    type: "ingredientList",
     item: () => {
-      return {_id, index}
-    }
-  })
+      return { _id, index };
+    },
+  });
 
   dragRef(drop(ref));
 
@@ -66,8 +68,8 @@ function BurgerConstructorSorted(props) {
         thumbnail={image}
         handleClose={() => removeIngredient(props.ing)}
       />
-    </div> 
-  )
+    </div>
+  );
 }
 
 BurgerConstructorSorted.propTypes = {

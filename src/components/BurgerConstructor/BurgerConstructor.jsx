@@ -8,20 +8,27 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import { setOrder, ADD_INGREDIENT, ADD_BUN, MOVE_INGREDIENT } from "../../utils/api";
 import BurgerConstructorSorted from "../BurgerConstructorSorted/BurgerConstructorSorted";
 import { v4 as uuidv4 } from 'uuid';
-import { useModal } from "../../hooks/useModal";
-import { isDisabled } from "@testing-library/user-event/dist/utils";
 
 
 function BurgerConstructor() {
 
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const [isOpenModal, setisOpenModal] = useState(false);
+
+  const openModal = useCallback(() => {
+    setisOpenModal(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setisOpenModal(false);
+  }, []);
+
 
   const dispatch = useDispatch();
   
-  const ingredients = useSelector(store => store.burgerIngredients.ingredients); // ингредиенты из стора
-  const bun = useSelector(store => store.burgerIngredients.bun); // булки из стора
-  const buns = bun.slice(bun.length - 1); // оставляем в массиве только последний элемент
-  const numberOrder = useSelector(store => store.numberOrder.order); // номер заказа из стора
+  const ingredients = useSelector(store => store.burgerIngredients.ingredients); 
+  const bun = useSelector(store => store.burgerIngredients.bun); 
+  const buns = bun.slice(bun.length - 1); 
+  const orderData = useSelector(store => store.orderData.order); 
   const burger = [...buns, ...ingredients];
 
   const [disabled, setDisabled] = useState(true);
@@ -70,22 +77,23 @@ function BurgerConstructor() {
     })
   }, [ingredients]);
 
-  const showModal = () => { // открыть модальное окно
+  const showModal = () => { 
     dispatch(setOrder(burger.map(item => item._id)));
     openModal();
   }
 
-  const hideModal = () => { // скрыть модальное окно
+  const hideModal = () => { 
     closeModal();
+    setDisabled(true)
   }
 
-  const numberBun = 0; // индекс из массива булок, чтобы при рендере булки были одинаковыми
-  const priceBuns = buns[numberBun]?.price * 2; //цена 2х булок
+  const numberBun = 0; 
+  const priceBuns = buns[numberBun]?.price * 2; 
 
   const totalPrice = (ingredients.length > 0 && buns.length > 0) && 
-  ingredients.reduce((sum, ingredient) => sum + ingredient.price, priceBuns).toString();
+  ingredients.reduce((s, v) => s + v.price, priceBuns).toString();
 
-  const bunUpper = buns.map((item) => { // разметка для верхней булки
+  const bunUpper = buns.map((item) => { 
     return (
         <ConstructorElement
           type="top"
@@ -97,7 +105,7 @@ function BurgerConstructor() {
       )
     })
 
-  const bunBottom = buns.map((item) => { // разметка для нижней булки
+  const bunBottom = buns.map((item) => { 
     return (
       <ConstructorElement
         type="bottom"
@@ -110,15 +118,20 @@ function BurgerConstructor() {
   })
 
   return(
-    <div className={styles.content} ref={dropRef} style={{outlineColor}}>
-      <div className={styles.borderElement}>
+    <div className={styles["burger-constructor"]} ref={dropRef} style={{outlineColor}}>
+         {isOpenModal && (
+        <Modal closeModal={hideModal}>
+          <OrderDetails orderData={orderData}/>
+        </Modal>
+      )}
+      <div className={styles["burger-constructor__element-border"]}>
         {bunUpper[numberBun]}
       </div>
-      <ul className={styles.list}>
+      <ul className={styles["burger-constructor-element__list"]}>
         {ingredients.map((ing, index) => {
           ing.index = index;
           return (
-            <li key={ing.uuid} className={styles.element}>
+            <li key={ing.uuid} className={styles["burger-constructor__element"]}>
               <BurgerConstructorSorted ing={ing} index={index} moveIngredient={moveIngredient} />
             </li> 
           )
@@ -127,25 +140,18 @@ function BurgerConstructor() {
       <div className="pl-8 mt-4">
         {bunBottom[numberBun]}
       </div>
-      <div className={styles.order}>
-        <div className={styles.resultSum}>
+      <div className={styles["burger-constructor__order"]}>
+        <div className={styles["burger-constructor__order-result"]}>
           {burger.length > 0 && (
             <>
               <p className="text text_type_digits-medium">{totalPrice}</p>
-              <div className={styles.diamond}></div>
             </>
           )}
         </div>
         <Button htmlType="button" type="primary" size="large" onClick={() => {showModal()}} disabled={disabled}>
           Оформить заказ
         </Button>
-      </div>
-
-      {isModalOpen && (
-        <Modal onClosePopup={hideModal}>
-          <OrderDetails numberOrder={numberOrder}/>
-        </Modal>
-      )}
+      </div>   
     </div>
   )
 }
