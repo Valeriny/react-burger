@@ -1,10 +1,10 @@
 import styles from "./OrderDetails.module.css";
 import PropTypes from "prop-types";
 
-const OrderDetails = (props) => {
+function OrderDetails({ orderData }) {
   return (
     <div className={`${styles["order"]} pt-30 pb-30 pr-25 pl-25`}>
-      <p className="text text_type_digits-large">{props.orderData}</p>
+      <p className="text text_type_digits-large">{orderData}</p>
       <p className="text text_type_main-medium mt-8 mb-15">
         идентификатор заказа
       </p>
@@ -17,7 +17,7 @@ const OrderDetails = (props) => {
       </p>
     </div>
   );
-};
+}
 
 OrderDetails.propTypes = {
   orderData: PropTypes.number.isRequired,
