@@ -6,9 +6,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Ingredient.module.css";
 import PropTypes from "prop-types";
+import { useNavigate, useMatch } from 'react-router-dom';
 
 function Ingredient(props) {
   const { name, price, image, openModal, _id, type } = props;
+  const navigate = useNavigate();
+  const match = useMatch('ingredients/:id');
+  const { id } = match?.params || {};
 
   let countIngredients = useSelector(
     (store) =>
@@ -27,12 +31,13 @@ function Ingredient(props) {
   });
 
   return (
-    <li
-      className={styles.ingredient}
-      onClick={openModal}
-      draggable
-      ref={dragRef}
-    >
+    <li className={styles.Ingredient} onClick={() => {
+      if(id !== _id) {
+        navigate(`/ingredients/${_id}`, { state: { background: true } });
+      }
+      openModal();
+    }} draggable ref={dragRef}>
+      
       <img src={image} alt={name} />
       {count !== 0 && <Counter count={count} size="default" extraClass="m-1" />}
       <div className={styles.price}>
