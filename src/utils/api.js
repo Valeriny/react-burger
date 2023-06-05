@@ -21,7 +21,7 @@ function checkResponse(res) {
   return Promise.reject(`Ошибка: ${res.status}`);
 }
 
-const request = (url, options) => {
+export const request = (url, options) => {
   return fetch(`${BURGER_API_URL}/${url}`, options).then((res) =>
     checkResponse(res)
   );
@@ -93,3 +93,31 @@ export const deleteDetailsIngredient = () => {
     type: DELETE_INFO_INGREDIENT,
   };
 };
+
+export const resetPassword = (email) => {
+  return fetch(`${BURGER_API_URL}/password-reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+    }),
+  })
+    .then((res) => checkResponse(res));
+}
+
+export const setNewPassword = (password, code) => {
+  return fetch(`${BURGER_API_URL}/password-reset/reset`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      password: password,
+      token: code,
+    }),
+  })
+    .then((res) => checkResponse(res));
+}
+
